@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Karigar Dashboard — ShilpMitra</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23F2EAD8' stroke='%23182644' stroke-width='1.6'/%3E%3Cpath d='M8 20c4-8 10-8 12 0s8 8 12 0' stroke='%23A83F2C' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="theme-color" content="#182644" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#182644; --indigo-2:#233457; --khadi:#F2EAD8; --khadi-2:#EAE0C9; --white:#FFFCF5;
+    --turmeric:#DB9A3C; --madder:#A83F2C; --thread:#4F6F5D; --ink:#221F1B; --ink-soft:#5A5548;
+    --line: rgba(34,31,27,0.14); --line-strong: rgba(34,31,27,0.28); --radius:16px;
+  }
+  html[data-theme="dark"]{
+    --indigo:#9DB5E8; --indigo-2:#7C97D1; --khadi:#15130F; --khadi-2:#211E18; --white:#1D1A15;
+    --turmeric:#EAB868; --madder:#E27459; --thread:#7DA592; --ink:#F2EAD8; --ink-soft:#B7AE9A;
+    --line: rgba(242,234,216,0.13); --line-strong: rgba(242,234,216,0.26);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--khadi); color:var(--ink); font-family:'Manrope',sans-serif; transition:background .35s ease, color .35s ease; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{ font-family:'Fraunces',serif; margin:0; color:var(--indigo); font-weight:600; }
+  a{color:inherit; text-decoration:none;}
+  button{ font-family:inherit; }
+  .app{ display:grid; grid-template-columns:240px 1fr; min-height:100vh; }
+
+  .sidebar{ background:var(--white); border-right:1px solid var(--line); display:flex; flex-direction:column; padding:22px 16px; position:sticky; top:0; height:100vh; }
+  .side-brand{ display:flex; align-items:center; gap:9px; font-family:'Fraunces',serif; font-weight:600; font-size:18px; padding:0 8px 24px; }
+  .side-brand em{ font-style:normal; color:var(--madder); }
+  .side-brand svg{ width:26px; height:26px; }
+  .side-nav{ display:flex; flex-direction:column; gap:3px; flex:1; }
+  .side-link{ display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:11px; font-size:14px; font-weight:600; color:var(--ink-soft); cursor:pointer; border:none; background:none; text-align:left; width:100%; }
+  .side-link svg{ width:18px; height:18px; flex-shrink:0; }
+  .side-link:hover{ background:var(--khadi-2); color:var(--indigo); }
+  .side-link.active{ background:var(--indigo); color:var(--khadi); }
+  .side-foot{ display:flex; align-items:center; justify-content:space-between; padding-top:16px; border-top:1px solid var(--line); }
+  .home-link{ font-size:12.5px; font-weight:600; color:var(--ink-soft); display:flex; align-items:center; gap:6px; }
+  .theme-toggle{ width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line-strong); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--indigo); }
+  .theme-toggle svg{ width:16px; height:16px; }
+  .theme-toggle .moon{ display:none; }
+  html[data-theme="dark"] .theme-toggle .sun{ display:none; }
+  html[data-theme="dark"] .theme-toggle .moon{ display:block; }
+
+  .main{ padding:26px clamp(20px,3vw,40px) 60px; }
+  .topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:26px; gap:16px; flex-wrap:wrap; }
+  .topbar h1{ font-size:24px; }
+  .topbar p{ font-size:13px; color:var(--ink-soft); margin-top:4px; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:11px 20px; border-radius:999px; font-weight:700; font-size:13.5px; cursor:pointer; border:1.5px solid transparent; background:var(--indigo); color:var(--khadi); transition:transform .2s ease, background .2s ease; }
+  .btn:hover{ background:var(--madder); }
+  .btn:active{ transform:scale(.97); }
+  .btn-ghost{ background:transparent; border-color:var(--line-strong); color:var(--indigo); }
+
+  .view{ display:none; }
+  .view.active{ display:block; }
+
+  .stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+  .stat-card{ background:var(--white); border:1px solid var(--line); border-radius:var(--radius); padding:20px; }
+  .stat-card span{ font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.05em; }
+  .stat-card b{ display:block; font-family:'Fraunces',serif; font-size:26px; color:var(--indigo); margin-top:8px; }
+  .stat-card .delta{ font-size:12px; color:var(--thread); margin-top:6px; display:block; font-weight:600; }
+
+  .panel{ background:var(--white); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:22px; }
+  .panel-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .panel-head h3{ font-size:16.5px; }
+
+  .chart{ display:flex; align-items:flex-end; gap:10px; height:150px; }
+  .chart .bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .chart .bar{ width:100%; max-width:34px; background:var(--indigo); border-radius:6px 6px 0 0; transition:background .3s ease; }
+  .chart .bar-col:hover .bar{ background:var(--madder); }
+  .chart .bar-col span{ font-size:10.5px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
+
+  .order-row{ display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--line); font-size:13.5px; }
+  .order-row:last-child{ border-bottom:none; }
+  .order-row .oname{ font-weight:700; color:var(--indigo); }
+  .order-row .omute{ color:var(--ink-soft); font-size:12px; }
+  .badge{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; padding:5px 11px; border-radius:999px; text-transform:uppercase; letter-spacing:.04em; }
+  .badge.new{ background:rgba(219,154,60,0.18); color:var(--turmeric); }
+  .badge.shipped{ background:rgba(79,111,93,0.18); color:var(--thread); }
+  .badge.delivered{ background:rgba(24,38,68,0.12); color:var(--indigo); }
+
+  .catalog-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:16px; }
+  .prod-card{ background:var(--white); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .prod-photo{ height:110px; background:linear-gradient(135deg,var(--khadi-2),var(--khadi)); display:flex; align-items:center; justify-content:center; color:var(--ink-soft); font-size:12px; }
+  .prod-body{ padding:14px; }
+  .prod-body h4{ font-size:14px; color:var(--indigo); margin-bottom:4px; }
+  .prod-body .price{ font-family:'Fraunces',serif; font-size:17px; color:var(--indigo); margin:6px 0; }
+  .prod-add{ border:2px dashed var(--line-strong); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; min-height:190px; cursor:pointer; color:var(--ink-soft); font-size:13px; font-weight:700; background:none; }
+  .prod-add:hover{ border-color:var(--madder); color:var(--madder); }
+  .prod-add svg{ width:26px; height:26px; }
+
+  .gauge{ width:140px; height:140px; border-radius:50%; margin:0 auto 14px; display:flex; align-items:center; justify-content:center; position:relative; }
+  .gauge b{ font-family:'Fraunces',serif; font-size:26px; color:var(--indigo); }
+  .gauge-inner{ width:108px; height:108px; border-radius:50%; background:var(--white); display:flex; align-items:center; justify-content:center; flex-direction:column; }
+  .gauge-inner span{ font-size:10px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
+
+  .modal-overlay{ position:fixed; inset:0; background:rgba(15,13,10,0.5); display:none; align-items:center; justify-content:center; z-index:200; padding:20px; }
+  .modal-overlay.open{ display:flex; }
+  .modal{ background:var(--white); border-radius:20px; padding:28px; max-width:460px; width:100%; max-height:88vh; overflow:auto; }
+  .modal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .modal-close{ background:none; border:none; cursor:pointer; color:var(--ink-soft); }
+  .drop-zone{ border:2px dashed var(--line-strong); border-radius:14px; padding:26px; text-align:center; color:var(--ink-soft); font-size:13px; margin-bottom:16px; cursor:pointer; }
+  .drop-zone svg{ width:26px; height:26px; margin:0 auto 8px; }
+  .ai-btn{ width:100%; padding:12px; border-radius:12px; border:1.5px solid var(--madder); background:transparent; color:var(--madder); font-weight:700; font-size:13.5px; cursor:pointer; margin-bottom:16px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .ai-btn.loading{ opacity:.6; pointer-events:none; }
+  .field{ margin-bottom:12px; }
+  .field label{ display:block; font-size:11px; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px; }
+  .field input,.field textarea{ width:100%; border:1.5px solid var(--line-strong); background:var(--khadi); border-radius:10px; padding:10px 12px; font-family:'Manrope',sans-serif; font-size:13.5px; color:var(--ink); }
+  .field textarea{ min-height:70px; resize:vertical; }
+
+  .nav-toggle-mobile{ display:none; }
+
+  @media (max-width: 880px){
+    .app{ grid-template-columns:1fr; }
+    .sidebar{ position:fixed; left:0; top:0; bottom:0; width:230px; z-index:150; transform:translateX(-100%); transition:transform .3s ease; }
+    .sidebar.open{ transform:translateX(0); }
+    .nav-toggle-mobile{ display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:10px; border:1px solid var(--line-strong); background:var(--white); cursor:pointer; }
+    .stat-grid{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:520px){ .stat-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-brand"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="#182644" stroke-width="1.4"/><path d="M8 20c4-8 10-8 12 0s8 8 12 0" stroke="#A83F2C" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Shilp<em>Mitra</em></div>
+    <nav class="side-nav">
+      <button class="side-link active" data-view="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Overview</button>
+      <button class="side-link" data-view="catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-2.5h5L16 7"/><circle cx="12" cy="13.5" r="3"/></svg>Catalog</button>
+      <button class="side-link" data-view="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M3 4h2l2.2 11h11.4L20.5 8H6.6"/></svg>Orders</button>
+      <button class="side-link" data-view="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.5-4.5 5-6 7-6s5.5 1.5 7 6"/></svg>Profile</button>
+    </nav>
+    <div class="side-foot" style="flex-direction:column; align-items:stretch; gap:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <a class="home-link" href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>Website</a>
+        <a class="home-link" href="buyer-marketplace.html">Bazaar ↗</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Dark mode" style="align-self:flex-end;">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 119.5 4a6.8 6.8 0 0010.5 10.5z"/></svg>
+      </button>
+      <a class="home-link" id="logoutBtn" style="background:none; border:none; cursor:pointer; text-align:left; padding:0;">Logout</a>
+      <button class="home-link" id="installBtn" style="display:none; background:none; border:none; cursor:pointer; text-align:left; padding:0; color:var(--madder); font-weight:700;">📲 App Install Karein</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="nav-toggle-mobile" id="mobileToggle" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <div>
+          <h1 id="pageTitle">Namaste</h1>
+          <p id="pageSub">Login karke apna real catalog dekhein</p>
+        </div>
+      </div>
+      <button class="btn" id="openAdd">+ Naya Product</button>
+    </div>
+
+    <section class="view active" id="view-overview">
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-card"><span>Total Listings</span><b id="statListings">—</b></div>
+        <div class="stat-card"><span>Total Kamai (paid orders)</span><b id="statEarnings">—</b></div>
+        <div class="stat-card"><span>Pending Orders</span><b id="statPending">—</b></div>
+        <div class="stat-card"><span>Trust Score</span><b id="statTrust">—</b></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>Recent orders</h3><a href="#" class="badge delivered" data-view-link="orders">Sab dekhein</a></div>
+        <div id="recentOrders"><p style="font-size:13px; color:var(--ink-soft);">Login karein orders dekhne ke liye.</p></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-catalog">
+      <div class="catalog-grid" id="catalogGrid">
+        <button class="prod-add" id="openAdd2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 5v14M5 12h14"/></svg>Naya Product Jodein</button>
+      </div>
+    </section>
+
+    <section class="view" id="view-orders">
+      <div class="panel">
+        <div class="panel-head"><h3>Sabhi orders</h3></div>
+        <div id="allOrders"><p style="font-size:13px; color:var(--ink-soft);">Login karein orders dekhne ke liye.</p></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-profile">
+      <div class="panel" style="max-width:360px; text-align:center;" id="profilePanel">
+        <p style="font-size:13px; color:var(--ink-soft);">Login karein profile dekhne ke liye.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-overlay open" id="authGate" style="z-index:300;">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-head"><h3 style="font-size:18px;">Karigar Login</h3></div>
+    <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:16px;">Phone number se login/signup karein — asli backend se connect hai.</p>
+    <div id="authStepPhone">
+      <div class="field"><label>Naam (pehli baar ke liye)</label><input type="text" id="authName" placeholder="Aapka naam" /></div>
+      <div class="field"><label>Phone</label><input type="text" id="authPhone" placeholder="+919990000001" /></div>
+      <button class="btn" style="width:100%; justify-content:center;" id="authSendOtp">OTP Bhejein</button>
+    </div>
+    <div id="authStepOtp" style="display:none;">
+      <p style="font-size:12px; color:var(--ink-soft); margin-bottom:10px;" id="authOtpHint"></p>
+      <div class="field"><label>OTP</label><input type="text" id="authOtp" placeholder="6-digit code" /></div>
+      <button class="btn" style="width:100%; justify-content:center;" id="authVerifyOtp">Verify Karein</button>
+    </div>
+    <p id="authError" style="font-size:12px; color:var(--madder); margin-top:10px;"></p>
+    <p style="font-size:11px; color:var(--ink-soft); margin-top:14px;">Backend chalu hai? <code id="apiBaseShown"></code></p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-head"><h3 style="font-size:18px;">Naya Product Jodein</h3><button class="modal-close" id="closeModal">✕</button></div>
+    <div class="field"><label>Product ke baare mein bataiye (raw notes)</label><textarea id="rawNotes" placeholder="jaise: mitti ka diya, hath se banaya, deepawali ke liye, natural glazing"></textarea></div>
+    <button class="ai-btn" id="aiGenerate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4L12 3z"/></svg>AI se Catalog Banayein</button>
+    <div class="field"><label>Title</label><input type="text" id="genTitle" placeholder="AI se ya khud likhein" /></div>
+    <div class="field"><label>Category</label><input type="text" id="genCat" placeholder="AI category suggest karega" /></div>
+    <div class="field"><label>Description</label><textarea id="genDesc" placeholder="AI description likhega"></textarea></div>
+    <div class="field"><label>Price (₹)</label><input type="text" id="genPrice" placeholder="jaise 680" /></div>
+    <p id="addError" style="font-size:12px; color:var(--madder); margin-bottom:10px;"></p>
+    <button class="btn" style="width:100%; justify-content:center;" id="saveProduct">Listing Save Karein</button>
+  </div>
+</div>
+
+<script>
+  // ---- REAL backend connection ----
+  var API_BASE = 'http://localhost:4000/api'; // apne deployed backend URL se replace karein
+  document.getElementById('apiBaseShown').textContent = API_BASE;
+  var authToken = null;
+  var currentUser = null;
+
+  // ---- Persist login across page reloads using localStorage ----
+  // NOTE: this only works when the page is actually hosted somewhere (your
+  // own domain, or even a simple local static server) — browser storage is
+  // disabled inside Claude.ai's own artifact preview, so if you're viewing
+  // this file through Claude's chat/preview it will still reset on reload.
+  // Once you host it on your own domain, this genuinely persists.
+  function saveSession(token, user){
+    try {
+      localStorage.setItem('shilpmitra_token', token);
+      localStorage.setItem('shilpmitra_user', JSON.stringify(user));
+    } catch (e) { /* storage blocked in this environment — session just won't persist */ }
+  }
+  function loadSession(){
+    try {
+      var t = localStorage.getItem('shilpmitra_token');
+      var u = localStorage.getItem('shilpmitra_user');
+      if (t && u) return { token: t, user: JSON.parse(u) };
+    } catch (e) {}
+    return null;
+  }
+  function clearSession(){
+    try { localStorage.removeItem('shilpmitra_token'); localStorage.removeItem('shilpmitra_user'); } catch (e) {}
+    authToken = null; currentUser = null;
+    document.getElementById('authGate').classList.add('open');
+  }
+
+  function enterDashboard(token, user){
+    authToken = token;
+    currentUser = user;
+    document.getElementById('authGate').classList.remove('open');
+    document.getElementById('pageTitle').textContent = 'Namaste, ' + (currentUser.name || currentUser.phone);
+    document.getElementById('pageSub').textContent = 'Aapka real dashboard, live backend se';
+    loadEverything();
+  }
+
+  var existingSession = loadSession();
+  if (existingSession) enterDashboard(existingSession.token, existingSession.user);
+
+  var links = document.querySelectorAll('.side-link');
+  var views = document.querySelectorAll('.view');
+  function activateView(name){
+    links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('data-view') === name); });
+    views.forEach(function(v){ v.classList.toggle('active', v.id === 'view-' + name); });
+    document.getElementById('sidebar').classList.remove('open');
+  }
+  links.forEach(function(l){ l.addEventListener('click', function(){ activateView(l.getAttribute('data-view')); }); });
+  document.querySelectorAll('[data-view-link]').forEach(function(el){
+    el.addEventListener('click', function(e){ e.preventDefault(); activateView(el.getAttribute('data-view-link')); });
+  });
+
+  document.getElementById('mobileToggle').addEventListener('click', function(){
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  // ---- PWA: register service worker + install prompt ----
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+  var deferredInstallPrompt = null;
+  var installBtn = document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    if (installBtn) installBtn.style.display = 'inline-flex';
+  });
+  if (installBtn){
+    installBtn.addEventListener('click', function(){
+      if (!deferredInstallPrompt) { alert('iPhone/Safari par: Share button dabao, phir "Add to Home Screen" select karo.'); return; }
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then(function(){ deferredInstallPrompt = null; installBtn.style.display = 'none'; });
+    });
+  }
+
+  var themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', function(){
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', function(){
+    clearSession();
+    document.getElementById('pageTitle').textContent = 'Namaste';
+    document.getElementById('pageSub').textContent = 'Login karke apna real catalog dekhein';
+  });
+
+  // ---- Auth (real OTP against backend) ----
+  document.getElementById('authSendOtp').addEventListener('click', function(){
+    var phone = document.getElementById('authPhone').value.trim();
+    var errEl = document.getElementById('authError');
+    errEl.textContent = '';
+    fetch(API_BASE + '/auth/otp/send', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: phone })
+    }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+      .then(function(res){
+        if (!res.ok){ errEl.textContent = res.d.error || 'OTP bhejne mein dikkat.'; return; }
+        document.getElementById('authStepPhone').style.display = 'none';
+        document.getElementById('authStepOtp').style.display = 'block';
+        document.getElementById('authOtpHint').textContent = res.d.dev_hint
+          ? ('Dev mode — OTP hai: ' + res.d.dev_hint)
+          : 'OTP bheja gaya.';
+      })
+      .catch(function(){ errEl.textContent = 'Backend (' + API_BASE + ') se connect nahi ho paya. Server chalu hai?'; });
+  });
+
+  document.getElementById('authVerifyOtp').addEventListener('click', function(){
+    var phone = document.getElementById('authPhone').value.trim();
+    var name = document.getElementById('authName').value.trim();
+    var code = document.getElementById('authOtp').value.trim();
+    var errEl = document.getElementById('authError');
+    fetch(API_BASE + '/auth/otp/verify', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: phone, code: code, name: name, role: 'artisan' })
+    }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+      .then(function(res){
+        if (!res.ok){ errEl.textContent = res.d.error || 'Verify nahi hua.'; return; }
+        authToken = res.d.token;
+        currentUser = res.d.user;
+        saveSession(res.d.token, res.d.user);
+        enterDashboard(res.d.token, res.d.user);
+      })
+      .catch(function(){ errEl.textContent = 'Backend se connect nahi ho paya.'; });
+  });
+
+  function authHeaders(){ return { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken }; }
+
+  // ---- Load real data from backend ----
+  function loadEverything(){
+    loadProducts();
+    loadOrders();
+    loadProfile();
+  }
+
+  var myProducts = [];
+  function loadProducts(){
+    fetch(API_BASE + '/products/mine/list', { headers: authHeaders() })
+      .then(function(r){ if (r.status === 401) { clearSession(); throw new Error('session expired'); } return r.json(); })
+      .then(function(rows){
+        myProducts = rows;
+        document.getElementById('statListings').textContent = rows.length;
+        var grid = document.getElementById('catalogGrid');
+        grid.innerHTML = '';
+        rows.forEach(function(p){
+          var card = document.createElement('div');
+          card.className = 'prod-card';
+          card.innerHTML = '<div class="prod-photo">' + p.title + '</div><div class="prod-body"><h4>' + p.title + '</h4><p class="price">₹' + p.price + '</p><span class="badge delivered">' + p.status + '</span></div>';
+          grid.appendChild(card);
+        });
+        var addBtn = document.createElement('button');
+        addBtn.className = 'prod-add';
+        addBtn.id = 'openAdd2b';
+        addBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 5v14M5 12h14"/></svg>Naya Product Jodein';
+        addBtn.addEventListener('click', function(){ document.getElementById('addModal').classList.add('open'); });
+        grid.appendChild(addBtn);
+      });
+  }
+
+  function loadOrders(){
+    fetch(API_BASE + '/orders/for-artisan', { headers: authHeaders() })
+      .then(function(r){ if (r.status === 401) { clearSession(); throw new Error('session expired'); } return r.json(); })
+      .then(function(rows){
+        var pending = rows.filter(function(o){ return o.status === 'new'; }).length;
+        var earnings = rows.filter(function(o){ return o.payment_status === 'paid'; }).reduce(function(s,o){ return s + o.total_price; }, 0);
+        document.getElementById('statPending').textContent = pending;
+        document.getElementById('statEarnings').textContent = '₹' + earnings;
+
+        function renderRow(o){
+          var div = document.createElement('div');
+          div.className = 'order-row';
+          div.innerHTML =
+            '<div><div class="oname">' + o.product_title + '</div><div class="omute">₹' + o.total_price + ' · Order #' + o.id + '</div></div>' +
+            '<div style="display:flex; align-items:center; gap:8px;">' +
+            '<span class="badge ' + o.status + '">' + o.status + '</span>' +
+            (o.status !== 'delivered' ? '<button class="btn-ghost" data-order="' + o.id + '" data-next="' + (o.status === 'new' ? 'shipped' : 'delivered') + '" style="padding:6px 12px; font-size:11px; border-radius:8px; cursor:pointer;">Mark ' + (o.status === 'new' ? 'Shipped' : 'Delivered') + '</button>' : '') +
+            '</div>';
+          return div;
+        }
+
+        var recentEl = document.getElementById('recentOrders');
+        var allEl = document.getElementById('allOrders');
+        recentEl.innerHTML = ''; allEl.innerHTML = '';
+        if (rows.length === 0){
+          recentEl.innerHTML = '<p style="font-size:13px; color:var(--ink-soft);">Abhi koi order nahi hai.</p>';
+          allEl.innerHTML = '<p style="font-size:13px; color:var(--ink-soft);">Abhi koi order nahi hai.</p>';
+        }
+        rows.slice(0,3).forEach(function(o){ recentEl.appendChild(renderRow(o)); });
+        rows.forEach(function(o){ allEl.appendChild(renderRow(o)); });
+
+        document.querySelectorAll('[data-order]').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            fetch(API_BASE + '/orders/' + btn.getAttribute('data-order') + '/status', {
+              method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ status: btn.getAttribute('data-next') })
+            }).then(function(){ loadOrders(); });
+          });
+        });
+      });
+  }
+
+  function loadProfile(){
+    fetch(API_BASE + '/artisans/' + currentUser.id)
+      .then(function(r){ return r.json(); })
+      .then(function(a){
+        document.getElementById('statTrust').textContent = (a.trust_score || 4) + ' / 5';
+        var pct = Math.round(((a.trust_score || 4) / 5) * 100);
+        document.getElementById('profilePanel').innerHTML =
+          '<div class="gauge" style="background:conic-gradient(var(--madder) 0% ' + pct + '%, var(--line) ' + pct + '% 100%);"><div class="gauge-inner"><b>' + (a.trust_score || 4) + '</b><span>TRUST SCORE</span></div></div>' +
+          '<h3 style="font-size:17px;">' + (a.name || 'Artisan') + '</h3>' +
+          '<p style="font-size:13px; color:var(--ink-soft); margin-top:4px;">' + (a.region || '') + '</p>' +
+          '<p style="font-size:12.5px; color:var(--ink-soft); margin-top:12px; line-height:1.6;">' + a.totalProducts + ' products listed, ' + a.totalOrders + ' orders complete. Total earnings: ₹' + a.totalEarnings + '</p>';
+      })
+      .catch(function(){});
+  }
+
+  // ---- Add Product modal ----
+  var modal = document.getElementById('addModal');
+  document.getElementById('openAdd').addEventListener('click', function(){ modal.classList.add('open'); });
+  document.getElementById('openAdd2').addEventListener('click', function(){ modal.classList.add('open'); });
+  document.getElementById('closeModal').addEventListener('click', function(){ modal.classList.remove('open'); });
+  modal.addEventListener('click', function(e){ if (e.target === modal) modal.classList.remove('open'); });
+
+  document.getElementById('aiGenerate').addEventListener('click', function(){
+    var btn = this;
+    var errEl = document.getElementById('addError');
+    errEl.textContent = '';
+    var rawNotes = document.getElementById('rawNotes').value.trim();
+    if (rawNotes.length < 4){ errEl.textContent = 'Pehle product ke baare mein kuch likhein.'; return; }
+    btn.classList.add('loading');
+    btn.textContent = 'AI catalog bana raha hai...';
+    fetch(API_BASE + '/products/ai-catalog', {
+      method: 'POST', headers: authHeaders(), body: JSON.stringify({ rawNotes: rawNotes })
+    })
+    .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+    .then(function(res){
+      btn.classList.remove('loading');
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4L12 3z"/></svg>AI se Catalog Banayein';
+      if (!res.ok){
+        errEl.textContent = res.d.error || 'AI se catalog nahi ban paya. (Ye asli backend error hai — shayad ANTHROPIC_API_KEY set nahi hai.)';
+        return;
+      }
+      document.getElementById('genTitle').value = res.d.title || '';
+      document.getElementById('genCat').value = res.d.category || '';
+      document.getElementById('genDesc').value = res.d.description || '';
+      document.getElementById('genPrice').value = res.d.suggested_price_inr || '';
+    })
+    .catch(function(){
+      btn.classList.remove('loading');
+      errEl.textContent = 'Backend se connect nahi ho paya.';
+    });
+  });
+
+  document.getElementById('saveProduct').addEventListener('click', function(){
+    var errEl = document.getElementById('addError');
+    var title = document.getElementById('genTitle').value.trim();
+    var price = parseFloat(String(document.getElementById('genPrice').value).replace(/[^0-9.]/g, ''));
+    if (!title || !price){ errEl.textContent = 'Title aur price zaroori hain.'; return; }
+
+    fetch(API_BASE + '/products', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({
+        title: title,
+        category: document.getElementById('genCat').value.trim(),
+        description: document.getElementById('genDesc').value.trim(),
+        price: price
+      })
+    })
+    .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, d: d }; }); })
+    .then(function(res){
+      if (!res.ok){ errEl.textContent = res.d.error || 'Save nahi hua.'; return; }
+      modal.classList.remove('open');
+      document.getElementById('rawNotes').value = '';
+      document.getElementById('genTitle').value = '';
+      document.getElementById('genCat').value = '';
+      document.getElementById('genDesc').value = '';
+      document.getElementById('genPrice').value = '';
+      activateView('catalog');
+      loadProducts();
+    })
+    .catch(function(){ errEl.textContent = 'Backend se connect nahi ho paya.'; });
+  });
+</script>
+</body>
+</html>

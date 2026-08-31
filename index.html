@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ShilpMitra — Kala se Bazaar tak, ek Dhaaga</title>
+<meta name="description" content="ShilpMitra — AI se marginalized artisans ka smart catalog, fair price aur seedha market linkage. Ek app, mobile, tablet aur laptop teeno par." />
+<meta name="theme-color" content="#182644" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23F2EAD8' stroke='%23182644' stroke-width='1.6'/%3E%3Cpath d='M8 20c4-8 10-8 12 0s8 8 12 0' stroke='%23A83F2C' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="ShilpMitra" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#182644;
+    --indigo-2:#233457;
+    --khadi:#F2EAD8;
+    --khadi-2:#EAE0C9;
+    --white:#FFFCF5;
+    --turmeric:#DB9A3C;
+    --madder:#A83F2C;
+    --thread:#4F6F5D;
+    --ink:#221F1B;
+    --ink-soft:#5A5548;
+    --line: rgba(34,31,27,0.14);
+    --line-strong: rgba(34,31,27,0.28);
+    --radius: 18px;
+    --maxw: 1180px;
+    --shadow: 0 1px 0 rgba(34,31,27,0.06);
+  }
+  html[data-theme="dark"]{
+    --indigo:#9DB5E8;
+    --indigo-2:#7C97D1;
+    --khadi:#15130F;
+    --khadi-2:#211E18;
+    --white:#1D1A15;
+    --turmeric:#EAB868;
+    --madder:#E27459;
+    --thread:#7DA592;
+    --ink:#F2EAD8;
+    --ink-soft:#B7AE9A;
+    --line: rgba(242,234,216,0.13);
+    --line-strong: rgba(242,234,216,0.26);
+  }
+  html[data-theme="dark"] .nav{ background:rgba(21,19,15,0.86); }
+  html[data-theme="dark"] .phone{ box-shadow:0 30px 60px -30px rgba(0,0,0,0.7); }
+  html[data-theme="dark"] .btn-solid{ color:#15130F; }
+  html[data-theme="dark"] .cta-footer, html[data-theme="dark"] footer.site-foot{ background:#0F0D0A; }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--khadi);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    transition:background .35s ease, color .35s ease;
+  }
+  .theme-toggle{
+    width:38px; height:38px; border-radius:50%; border:1.5px solid var(--line-strong); background:transparent;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--indigo); flex-shrink:0;
+    transition:border-color .25s ease, background .25s ease;
+  }
+  .theme-toggle:hover{ background:var(--khadi-2); }
+  .theme-toggle svg{ width:18px; height:18px; }
+  .theme-toggle .moon{ display:none; }
+  html[data-theme="dark"] .theme-toggle .sun{ display:none; }
+  html[data-theme="dark"] .theme-toggle .moon{ display:block; }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  h1,h2,h3{font-family:'Fraunces', serif; margin:0; color:var(--indigo); font-weight:600; letter-spacing:-0.01em;}
+  p{margin:0;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 clamp(20px,5vw,56px);}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--madder);
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--madder);display:inline-block;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:13px 26px; border-radius:999px; font-weight:700; font-size:14.5px;
+    cursor:pointer; border:1.5px solid transparent; transition:transform .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
+    white-space:nowrap;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-solid{background:var(--indigo); color:var(--khadi);}
+  .btn-solid:hover{background:var(--madder);}
+  .btn-ghost{border-color:var(--line-strong); color:var(--indigo); background:transparent;}
+  .btn-ghost:hover{border-color:var(--indigo); background:rgba(24,38,68,0.05);}
+  .btn-sm{padding:9px 18px; font-size:13px;}
+
+  /* thread divider used between sections */
+  .thread-rule{ position:relative; height:34px; }
+  .thread-rule svg{ width:100%; height:100%; display:block; }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(242,234,216,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease, box-shadow .3s ease;
+  }
+  header.nav.scrolled{ border-bottom-color:var(--line); box-shadow:0 6px 24px -20px rgba(24,38,68,0.4); }
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:16px clamp(20px,5vw,56px);
+    display:flex; align-items:center; justify-content:space-between; gap:24px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:600; font-size:20px; color:var(--indigo);}
+  .brand em{ font-style:normal; color:var(--madder); }
+  .brand svg{ width:30px; height:30px; }
+  .nav-links{display:flex; gap:30px; align-items:center;}
+  .nav-links a{font-size:14px; font-weight:600; color:var(--ink-soft); position:relative; padding:4px 0;}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--madder);transition:width .25s ease;}
+  .nav-links a:hover{color:var(--indigo);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{display:flex; gap:10px; align-items:center;}
+  .nav-toggle{ display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px; }
+  .nav-toggle span{width:22px; height:2px; background:var(--indigo); border-radius:2px; transition:transform .3s ease, opacity .3s ease;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; padding:clamp(48px,8vw,88px) 0 clamp(40px,6vw,64px);
+    background-image:
+      repeating-linear-gradient(90deg, rgba(24,38,68,0.035) 0px, rgba(24,38,68,0.035) 1px, transparent 1px, transparent 46px);
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:clamp(30px,5vw,60px); align-items:center; }
+  .hero-copy h1{ font-size:clamp(38px,5.4vw,64px); line-height:1.04; margin:18px 0 20px; }
+  .hero-copy h1 .accent{ color:var(--madder); font-style:italic; }
+  .lede{ font-size:clamp(15.5px,1.6vw,18px); color:var(--ink-soft); max-width:46ch; line-height:1.65; margin-bottom:30px; }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:44px; }
+  .hero-stats{ display:flex; gap:clamp(24px,4vw,44px); flex-wrap:wrap; }
+  .stat b{ font-family:'Fraunces',serif; font-size:clamp(24px,3vw,32px); color:var(--indigo); display:block; font-weight:600; }
+  .stat span{ font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; }
+
+  .hero-visual{ position:relative; aspect-ratio:1/1; max-width:460px; margin:0 auto; width:100%; }
+  .loom-card{ position:absolute; inset:0; }
+  .node{
+    position:absolute; width:104px; text-align:center;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft);
+  }
+  .node .dot{
+    width:66px; height:66px; border-radius:50%; background:var(--white); border:1.5px solid var(--line-strong);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 8px;
+    box-shadow:0 10px 24px -14px rgba(24,38,68,0.5);
+  }
+  .node svg{ width:28px; height:28px; }
+  .node.n1{ top:6%; left:0; }
+  .node.n2{ top:38%; left:50%; transform:translateX(-50%); }
+  .node.n3{ bottom:2%; right:0; }
+  .node.n1 .dot{ color:var(--madder); border-color:var(--madder); }
+  .node.n2 .dot{ color:var(--turmeric); border-color:var(--turmeric); }
+  .node.n3 .dot{ color:var(--thread); border-color:var(--thread); }
+
+  .shuttle{ offset-rotate:0deg; animation:travel 5.5s linear infinite; }
+  @keyframes travel{ 0%{ offset-distance:0%; } 100%{ offset-distance:100%; } }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{ padding:clamp(56px,8vw,96px) 0; }
+  .section-head{ max-width:640px; margin-bottom:clamp(34px,5vw,54px); }
+  .section-head h2{ font-size:clamp(28px,3.6vw,42px); margin-top:14px; line-height:1.12; }
+  .section-head p{ color:var(--ink-soft); margin-top:14px; font-size:15.5px; line-height:1.6; }
+  .section.alt{ background:var(--white); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+  /* ---------- HOW IT WORKS ---------- */
+  .how-track{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; position:relative; }
+  .how-track::before{
+    content:""; position:absolute; top:34px; left:8%; right:8%; height:0;
+    border-top:2px dashed var(--line-strong);
+  }
+  .how-step{ position:relative; background:var(--khadi); }
+  .how-num{
+    width:68px; height:68px; border-radius:50%; background:var(--indigo); color:var(--khadi);
+    display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:22px; margin-bottom:22px;
+    position:relative; z-index:2;
+  }
+  .how-step h3{ font-size:19px; margin-bottom:10px; }
+  .how-step p{ color:var(--ink-soft); font-size:14.5px; line-height:1.6; }
+
+  /* ---------- FEATURES ---------- */
+  .feat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .feat-card{ background:var(--white); padding:30px 26px; transition:background .3s ease; }
+  .feat-card:hover{ background:var(--khadi-2); }
+  .feat-icon{
+    width:44px; height:44px; border-radius:12px; background:var(--indigo); color:var(--khadi);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+  }
+  .feat-icon svg{ width:22px; height:22px; }
+  .feat-card h3{ font-size:16.5px; margin-bottom:8px; }
+  .feat-card p{ font-size:13.8px; color:var(--ink-soft); line-height:1.55; }
+
+  /* ---------- PHONE DEMO ---------- */
+  .demo-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:clamp(30px,5vw,70px); align-items:center; }
+  .phone{
+    width:250px; margin:0 auto; background:var(--indigo); border-radius:34px; padding:12px;
+    box-shadow:0 30px 60px -30px rgba(24,38,68,0.55);
+  }
+  .phone-notch{ width:70px; height:16px; background:var(--indigo-2); border-radius:10px; margin:0 auto 8px; }
+  .phone-screen{ background:var(--white); border-radius:22px; height:440px; position:relative; overflow:hidden; }
+  .screen-tab{ position:absolute; inset:0; padding:18px; opacity:0; transform:translateX(14px); transition:opacity .5s ease, transform .5s ease; }
+  .screen-tab.active{ opacity:1; transform:translateX(0); position:relative; }
+  .screen-title{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--madder); text-transform:uppercase; letter-spacing:.08em; margin-bottom:12px; }
+  .mock-photo{ height:110px; border-radius:12px; background:linear-gradient(135deg,var(--khadi-2),var(--khadi)); border:1px solid var(--line); margin-bottom:14px; display:flex; align-items:center; justify-content:center; color:var(--ink-soft); }
+  .mock-line{ height:9px; border-radius:5px; background:var(--khadi-2); margin-bottom:8px; }
+  .mock-line.w60{width:60%;} .mock-line.w80{width:80%;} .mock-line.w40{width:40%;}
+  .mock-tag{ display:inline-flex; padding:5px 11px; border-radius:999px; background:var(--khadi); font-size:10.5px; font-family:'IBM Plex Mono',monospace; color:var(--thread); border:1px solid var(--line); margin-right:6px; margin-top:6px;}
+  .mock-price{ font-family:'Fraunces',serif; font-size:26px; color:var(--indigo); margin:10px 0; }
+  .dots{ display:flex; gap:6px; justify-content:center; margin-top:14px; }
+  .dots span{ width:6px; height:6px; border-radius:50%; background:var(--line-strong); transition:background .3s ease, transform .3s ease; }
+  .dots span.active{ background:var(--madder); transform:scale(1.3); }
+
+  .demo-copy .checklist{ margin-top:26px; display:flex; flex-direction:column; gap:16px; }
+  .check-item{ display:flex; gap:14px; align-items:flex-start; }
+  .check-item .tick{ width:24px; height:24px; border-radius:50%; background:var(--thread); color:var(--white); flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-top:2px; }
+  .check-item .tick svg{ width:12px; height:12px; }
+  .check-item h4{ font-size:15px; font-weight:700; color:var(--indigo); margin-bottom:3px; }
+  .check-item p{ font-size:13.8px; color:var(--ink-soft); }
+
+  /* ---------- AUDIENCE TOGGLE ---------- */
+  .toggle-bar{ display:inline-flex; background:var(--white); border:1px solid var(--line); border-radius:999px; padding:4px; margin-bottom:36px; }
+  .toggle-btn{ padding:10px 24px; border-radius:999px; font-weight:700; font-size:13.5px; cursor:pointer; border:none; background:transparent; color:var(--ink-soft); transition:background .3s ease, color .3s ease; }
+  .toggle-btn.active{ background:var(--indigo); color:var(--khadi); }
+  .audience-panel{ display:none; }
+  .audience-panel.active{ display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .audience-col h3{ font-size:22px; margin-bottom:14px; }
+  .audience-col p{ color:var(--ink-soft); font-size:14.5px; line-height:1.65; margin-bottom:18px; }
+  .pill-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .pill{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; padding:7px 13px; border-radius:999px; border:1px solid var(--line-strong); color:var(--ink-soft); }
+  .price-card{ background:var(--indigo); color:var(--khadi); border-radius:var(--radius); padding:30px; }
+  .price-card .num{ font-family:'Fraunces',serif; font-size:44px; margin:6px 0; color:var(--turmeric); }
+  .price-card p{ color:rgba(242,234,216,0.75); font-size:13.5px; line-height:1.6; }
+
+  /* ---------- DEVICES SHOWCASE ---------- */
+  .device-row{ display:flex; align-items:flex-end; justify-content:center; gap:clamp(20px,4vw,50px); flex-wrap:wrap; padding-top:20px; }
+  .device{ position:relative; }
+  .device-label{ text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin-top:14px; text-transform:uppercase; letter-spacing:.06em; }
+  .d-mobile{ width:140px; height:280px; background:var(--indigo); border-radius:22px; padding:8px; }
+  .d-mobile .screen{ background:var(--white); width:100%; height:100%; border-radius:15px; }
+  .d-tablet{ width:220px; height:290px; background:var(--indigo); border-radius:16px; padding:10px; }
+  .d-tablet .screen{ background:var(--white); width:100%; height:100%; border-radius:8px; }
+  .d-laptop{ width:340px; }
+  .d-laptop .lid{ background:var(--indigo); border-radius:10px 10px 0 0; padding:10px 10px 0; }
+  .d-laptop .screen{ background:var(--white); width:100%; height:190px; border-radius:4px 4px 0 0; }
+  .d-laptop .base{ height:12px; background:var(--indigo-2); border-radius:0 0 8px 8px; position:relative; }
+  .d-laptop .base::after{ content:""; position:absolute; left:50%; top:0; transform:translateX(-50%); width:60px; height:4px; background:var(--indigo); border-radius:0 0 4px 4px; }
+  .mini-ui{ padding:10px; height:100%; display:flex; flex-direction:column; gap:6px; }
+  .mini-block{ background:var(--khadi-2); border-radius:5px; height:8px; }
+  .mini-block.short{ width:50%; }
+  .mini-block.tall{ height:34px; background:linear-gradient(135deg,var(--khadi-2),var(--khadi)); border:1px solid var(--line); }
+  .mini-row{ display:flex; gap:6px; }
+  .mini-row .mini-block{ flex:1; height:26px; }
+
+  /* ---------- VOICES / TESTIMONIALS ---------- */
+  .voice-track{ position:relative; overflow:hidden; }
+  .voice-slides{ display:flex; transition:transform .6s cubic-bezier(.65,0,.35,1); }
+  .voice-card{ flex:0 0 100%; padding:2px; }
+  .voice-inner{ background:var(--white); border:1px solid var(--line); border-radius:var(--radius); padding:clamp(28px,4vw,44px); max-width:640px; margin:0 auto; text-align:center; }
+  .voice-quote{ font-family:'Fraunces',serif; font-style:italic; font-size:clamp(19px,2.4vw,24px); color:var(--indigo); line-height:1.5; }
+  .voice-who{ margin-top:20px; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--madder); }
+  .voice-dots{ display:flex; justify-content:center; gap:8px; margin-top:24px; }
+  .voice-dots button{ width:8px; height:8px; border-radius:50%; border:none; background:var(--line-strong); cursor:pointer; padding:0; transition:background .3s ease, transform .3s ease; }
+  .voice-dots button.active{ background:var(--madder); transform:scale(1.25); }
+
+  /* ---------- CTA FOOTER ---------- */
+  .cta-footer{ background:var(--indigo); color:var(--khadi); padding:clamp(56px,8vw,96px) 0; text-align:center; }
+  .cta-footer h2{ color:var(--khadi); font-size:clamp(28px,4vw,44px); }
+  .cta-footer p{ color:rgba(242,234,216,0.7); max-width:52ch; margin:16px auto 32px; font-size:15.5px; }
+  .store-row{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .store-badge{ display:flex; align-items:center; gap:10px; border:1.5px solid rgba(242,234,216,0.3); border-radius:12px; padding:11px 20px; }
+  .store-badge svg{ width:22px; height:22px; }
+  .store-badge span{ text-align:left; display:block; font-size:9.5px; color:rgba(242,234,216,0.6); }
+  .store-badge b{ display:block; font-size:14px; }
+
+  footer.site-foot{ padding:56px 0 26px; background:var(--indigo); color:var(--khadi); }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:32px; padding-bottom:36px; border-bottom:1px solid rgba(242,234,216,0.15); }
+  .foot-brand .brand{ color:var(--khadi); font-size:19px; margin-bottom:12px; }
+  .foot-brand p{ font-size:13.5px; color:rgba(242,234,216,0.6); line-height:1.6; max-width:32ch; }
+  .foot-col h4{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--turmeric); margin-bottom:14px; }
+  .foot-col a{ display:block; font-size:13.5px; color:rgba(242,234,216,0.75); margin-bottom:10px; transition:color .2s ease; }
+  .foot-col a:hover{ color:var(--khadi); }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; padding-top:22px; }
+  .foot-bottom p{ font-size:12px; color:rgba(242,234,216,0.55); font-family:'IBM Plex Mono',monospace; }
+  .social-row{ display:flex; gap:10px; }
+  .social-row a{ width:34px; height:34px; border-radius:50%; border:1px solid rgba(242,234,216,0.25); display:flex; align-items:center; justify-content:center; transition:border-color .2s ease, background .2s ease; }
+  .social-row a:hover{ background:rgba(242,234,216,0.1); border-color:rgba(242,234,216,0.5); }
+  .social-row svg{ width:16px; height:16px; }
+  .lang-pill{ display:inline-flex; border:1px solid rgba(242,234,216,0.25); border-radius:999px; padding:3px; font-family:'IBM Plex Mono',monospace; font-size:11px; }
+  .lang-pill span{ padding:5px 12px; border-radius:999px; cursor:pointer; }
+  .lang-pill span.active{ background:rgba(242,234,216,0.15); }
+
+  /* ---------- PRELOADER ---------- */
+  #preloader{ position:fixed; inset:0; z-index:999; background:var(--khadi); display:flex; align-items:center; justify-content:center; transition:opacity .6s ease, visibility .6s ease; }
+  #preloader.done{ opacity:0; visibility:hidden; }
+  .pre-thread{ width:120px; height:6px; position:relative; }
+  .pre-thread::before{ content:""; position:absolute; inset:0; border-radius:4px; background:var(--line); }
+  .pre-thread::after{ content:""; position:absolute; left:0; top:0; height:100%; width:40%; border-radius:4px; background:var(--madder); animation:preload 1.1s ease-in-out infinite; }
+  @keyframes preload{ 0%{ left:-40%; } 100%{ left:100%; } }
+
+  /* ---------- PROGRESS BAR ---------- */
+  #scrollProgress{ position:fixed; top:0; left:0; height:3px; background:var(--madder); z-index:200; width:0%; transition:width .1s linear; }
+
+  /* ---------- BACK TO TOP ---------- */
+  #backToTop{
+    position:fixed; right:22px; bottom:22px; width:46px; height:46px; border-radius:50%;
+    background:var(--indigo); color:var(--khadi); border:none; cursor:pointer; z-index:90;
+    display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(12px); pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease, background .3s ease; box-shadow:0 12px 30px -14px rgba(24,38,68,0.6);
+  }
+  #backToTop.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+  #backToTop:hover{ background:var(--madder); }
+  #backToTop svg{ width:18px; height:18px; }
+
+  /* ---------- ABOUT / MISSION ---------- */
+  .pillar-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:10px; }
+  .pillar{ padding:26px; border:1px solid var(--line); border-radius:var(--radius); background:var(--khadi); }
+  .pillar .num{ font-family:'Fraunces',serif; font-size:15px; color:var(--madder); margin-bottom:10px; }
+  .pillar h3{ font-size:17px; margin-bottom:8px; }
+  .pillar p{ font-size:13.8px; color:var(--ink-soft); line-height:1.55; }
+
+  /* ---------- IMPACT STATS ---------- */
+  .impact-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-top:10px; }
+  .impact-card{ background:var(--white); padding:28px 22px; text-align:center; }
+  .impact-card b{ font-family:'Fraunces',serif; font-size:clamp(26px,3vw,34px); color:var(--indigo); display:block; }
+  .impact-card span{ font-size:12.5px; color:var(--ink-soft); display:block; margin-top:6px; line-height:1.4; }
+  .impact-note{ font-size:11.5px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; margin-top:14px; opacity:.8; }
+
+  /* ---------- PARTNERS ---------- */
+  .partner-strip{ display:flex; flex-wrap:wrap; gap:clamp(24px,5vw,60px); align-items:center; justify-content:center; padding:8px 0; }
+  .partner-word{ font-family:'Fraunces',serif; font-size:clamp(17px,2vw,22px); color:var(--ink-soft); opacity:.55; font-weight:600; transition:opacity .3s ease, color .3s ease; }
+  .partner-word:hover{ opacity:1; color:var(--indigo); }
+
+  /* ---------- FAQ ---------- */
+  .faq-list{ max-width:760px; margin:0 auto; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-q{ width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:20px 4px; display:flex; justify-content:space-between; align-items:center; gap:16px; font-family:'Fraunces',serif; font-size:17px; color:var(--indigo); }
+  .faq-q .plus{ width:22px; height:22px; flex-shrink:0; position:relative; }
+  .faq-q .plus::before, .faq-q .plus::after{ content:""; position:absolute; background:var(--madder); border-radius:2px; transition:transform .3s ease; }
+  .faq-q .plus::before{ top:50%; left:0; width:100%; height:2px; transform:translateY(-50%); }
+  .faq-q .plus::after{ left:50%; top:0; width:2px; height:100%; transform:translateX(-50%); }
+  .faq-item.open .plus::after{ transform:translateX(-50%) rotate(90deg); opacity:0; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .35s ease; }
+  .faq-a p{ padding:0 4px 20px; font-size:14px; color:var(--ink-soft); line-height:1.65; max-width:64ch; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:start; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); margin-bottom:7px; }
+  .field input, .field textarea{
+    width:100%; border:1.5px solid var(--line-strong); background:var(--white); border-radius:10px; padding:12px 14px;
+    font-family:'Manrope',sans-serif; font-size:14.5px; color:var(--ink); transition:border-color .25s ease;
+  }
+  .field input:focus, .field textarea:focus{ outline:none; border-color:var(--indigo); }
+  .field textarea{ resize:vertical; min-height:100px; }
+  .field.error input, .field.error textarea{ border-color:var(--madder); }
+  .field .err-msg{ display:none; font-size:12px; color:var(--madder); margin-top:6px; font-family:'IBM Plex Mono',monospace; }
+  .field.error .err-msg{ display:block; }
+  .form-success{ display:none; background:var(--thread); color:var(--white); padding:14px 18px; border-radius:12px; font-size:13.8px; margin-top:6px; }
+  .form-success.show{ display:block; }
+  .contact-side h3{ font-size:20px; margin-bottom:12px; }
+  .contact-side p{ font-size:14px; color:var(--ink-soft); line-height:1.65; margin-bottom:20px; }
+  .info-row{ display:flex; gap:12px; align-items:flex-start; margin-bottom:16px; }
+  .info-row .ic{ width:34px; height:34px; border-radius:50%; background:var(--khadi-2); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--indigo); }
+  .info-row .ic svg{ width:16px; height:16px; }
+  .info-row b{ display:block; font-size:13.5px; color:var(--indigo); }
+  .info-row span{ font-size:13px; color:var(--ink-soft); }
+
+  @media (max-width: 980px){
+    .foot-grid{ grid-template-columns:1fr 1fr; }
+    .impact-grid{ grid-template-columns:repeat(2,1fr); }
+    .pillar-grid{ grid-template-columns:1fr; }
+    .contact-grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 560px){
+    .foot-grid{ grid-template-columns:1fr; }
+    .impact-grid{ grid-template-columns:1fr; }
+  }
+
+  /* reveal animation base */
+  .reveal{ opacity:0; transform:translateY(26px); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .shuttle{ animation:none; }
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 980px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-visual{ order:-1; max-width:340px; }
+    .demo-grid{ grid-template-columns:1fr; }
+    .how-track{ grid-template-columns:1fr; gap:36px; }
+    .how-track::before{ display:none; }
+    .feat-grid{ grid-template-columns:repeat(2,1fr); }
+    .audience-panel.active{ grid-template-columns:1fr; }
+    .nav-links{ display:none; }
+    .nav-cta .btn-ghost{ display:none; }
+  }
+  @media (max-width: 720px){
+    .nav-toggle{ display:flex; }
+    .nav-links{
+      display:flex; flex-direction:column; position:absolute; top:100%; left:0; right:0;
+      background:var(--khadi); border-bottom:1px solid var(--line); padding:10px clamp(20px,5vw,56px) 20px;
+      gap:4px; transform:translateY(-8px); opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+    }
+    .nav-links.open{ transform:translateY(0); opacity:1; pointer-events:auto; }
+    .nav-links a{ padding:11px 0; border-bottom:1px solid var(--line); }
+    .nav-cta{ display:none; }
+    .feat-grid{ grid-template-columns:1fr; }
+    .hero-stats{ gap:26px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="preloader"><div class="pre-thread"></div></div>
+<div id="scrollProgress"></div>
+
+<header class="nav" id="siteNav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="#182644" stroke-width="1.4"/><path d="M8 20c4-8 10-8 12 0s8 8 12 0" stroke="#A83F2C" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+      Shilp<em>Mitra</em>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#how">Kaise Kaam Karta Hai</a>
+      <a href="#features">Suvidhayein</a>
+      <a href="karigar-dashboard.html">Karigar Dashboard</a>
+      <a href="buyer-marketplace.html">Bazaar</a>
+      <a href="#voices">Karigar Awaaz</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle" aria-label="Dark mode switch karein">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 14.5A8.5 8.5 0 119.5 4a6.8 6.8 0 0010.5 10.5z"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-sm" href="#audience">Karigar Hoon</a>
+      <a class="btn btn-solid btn-sm" href="#audience">Shuru Karein</a>
+      <button class="btn btn-solid btn-sm" id="installBtn" style="display:none;">App Install Karein</button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">AI market linkage · karigar-first</p>
+        <h1>Kala se Bazaar tak,<br><span class="accent">ek dhaaga.</span></h1>
+        <p class="lede">ShilpMitra ek photo ya awaaz se artisan ke product ka poora catalog AI se bana deta hai — fair price, sahi bhasha, aur seedha bazaar tak pahunch, bina kisi dalal ke.</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="karigar-dashboard.html">Karigar Dashboard Dekhein</a>
+          <a class="btn btn-ghost" href="buyer-marketplace.html">Bazaar Ghumiye</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b data-count="12" data-suffix="+">0</b><span>bhashayein supported</span></div>
+          <div class="stat"><b data-count="6" data-suffix="-10%">0</b><span>seedha commission, dalal nahi</span></div>
+          <div class="stat"><b data-count="3" data-suffix="x">0</b><span>tez catalog banana</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="loom-card">
+          <svg viewBox="0 0 400 400" style="position:absolute;inset:0;width:100%;height:100%;">
+            <path id="threadPath" d="M62 60 C 160 60, 160 200, 200 200 S 300 340, 338 340" fill="none" stroke="rgba(24,38,68,0.28)" stroke-width="1.6" stroke-dasharray="2 8" stroke-linecap="round"/>
+          </svg>
+          <div class="shuttle" style="position:absolute;width:10px;height:10px;border-radius:50%;background:var(--madder);offset-path:path('M62 60 C 160 60, 160 200, 200 200 S 300 340, 338 340');"></div>
+          <div class="node n1"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-2.5h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg></div>Photo/Awaaz</div>
+          <div class="node n2"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4L12 3z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/></svg></div>AI Catalog</div>
+          <div class="node n3"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11h11.4L20.5 8H6.6"/></svg></div>Bazaar Tak</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="thread-rule"><svg viewBox="0 0 1200 34" preserveAspectRatio="none"><line x1="0" y1="17" x2="1200" y2="17" stroke="rgba(24,38,68,0.18)" stroke-width="1" stroke-dasharray="1 9"/></svg></div>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Process</p>
+        <h2>Teen kadam, ek naya bazaar</h2>
+        <p>Har kadam pichhle se seedha judta hai — koi confusing form nahi, koi tech-jaankari zaroori nahi.</p>
+      </div>
+      <div class="how-track">
+        <div class="how-step reveal">
+          <div class="how-num">01</div>
+          <h3>Photo khींcho ya bolo</h3>
+          <p>Artisan apne product ki ek photo leta hai, ya bas apni bhasha mein bol ke bata deta hai ki cheez kya hai.</p>
+        </div>
+        <div class="how-step reveal">
+          <div class="how-num">02</div>
+          <h3>AI catalog banata hai</h3>
+          <p>Category, description, tags aur fair price AI khud generate karta hai — 12+ regional bhashaon mein.</p>
+        </div>
+        <div class="how-step reveal">
+          <div class="how-num">03</div>
+          <h3>Seedha bazaar tak</h3>
+          <p>Listing Amazon, Flipkart, Meesho aur corporate buyers tak pahunchti hai — bina beech mein dalal ke.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Suvidhayein</p>
+        <h2>Har feature ek asli dikkat ke liye</h2>
+      </div>
+      <div class="feat-grid reveal">
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-2.5h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg></div>
+          <h3>Smart Cataloging</h3>
+          <p>Ek photo se poora listing — title, description aur category apne aap ban jaate hain.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v4M9 22h6"/></svg></div>
+          <h3>Voice-First Input</h3>
+          <p>Likhna nahi aata? Bas bol do — AI use text catalog mein badal deta hai.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h18M12 3v18" stroke-linecap="round"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <h3>AI Fair Pricing</h3>
+          <p>Material, mehnat aur market demand dekh kar sahi price suggest karta hai.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11h11.4L20.5 8H6.6"/></svg></div>
+          <h3>Market Linkage</h3>
+          <p>Amazon Karigar, Flipkart Samarth aur corporate gifting buyers se seedha jud jaao.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Authenticity Badge</h3>
+          <p>Community-verified "Handmade" badge — buyer ko bharosa, artisan ko pehchaan.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18 14 14 0 010-18z"/></svg></div>
+          <h3>Regional Language</h3>
+          <p>Hindi, Tamil, Bengali, Odia aur aur bhashaon mein poora app.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap demo-grid">
+      <div class="phone-wrap reveal">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" id="phoneScreen">
+            <div class="screen-tab active" data-tab="0">
+              <p class="screen-title">Catalog</p>
+              <div class="mock-photo">product photo</div>
+              <div class="mock-line w80"></div>
+              <div class="mock-line w60"></div>
+              <div class="mock-line w40"></div>
+              <div><span class="mock-tag">terracotta</span><span class="mock-tag">handmade</span></div>
+            </div>
+            <div class="screen-tab" data-tab="1">
+              <p class="screen-title">Fair Price</p>
+              <div class="mock-line w40"></div>
+              <div class="mock-price">₹840</div>
+              <div class="mock-line w80"></div>
+              <div class="mock-line w60"></div>
+              <span class="mock-tag">AI suggested</span><span class="mock-tag">market-fair</span>
+            </div>
+            <div class="screen-tab" data-tab="2">
+              <p class="screen-title">Orders</p>
+              <div class="mock-line w60"></div>
+              <div class="mock-line w40"></div>
+              <div style="margin-top:14px;"></div>
+              <div class="mock-line w80"></div>
+              <div class="mock-line w40"></div>
+              <span class="mock-tag">Meesho</span><span class="mock-tag">shipped</span>
+            </div>
+          </div>
+        </div>
+        <div class="dots" id="phoneDots">
+          <span class="active"></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="demo-copy reveal">
+        <p class="eyebrow">Andar jhaanko</p>
+        <h2>Ek app, poora safar</h2>
+        <p class="lede" style="margin-top:14px;">Catalog banane se lekar order track karne tak — sab kuch artisan ki apni bhasha mein, apne phone par.</p>
+        <div class="checklist">
+          <div class="check-item">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Kam data, low-end phone</h4><p>2G/3G connection par bhi smoothly chalta hai.</p></div>
+          </div>
+          <div class="check-item">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Ek-click market listing</h4><p>Multiple platforms par ek saath list ho jaata hai.</p></div>
+          </div>
+          <div class="check-item">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+            <div><h4>Payment seedha khaate mein</h4><p>Koi middleman nahi, paisa artisan tak direct.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Hamara maksad</p>
+        <h2>Kala bachegi, tabhi jab uspe kamai ho</h2>
+        <p>ShilpMitra teen simple stambhon (pillars) par khada hai — har ek ek asli gap ko bharta hai.</p>
+      </div>
+      <div class="pillar-grid reveal">
+        <div class="pillar">
+          <div class="num">01 — Karigar</div>
+          <h3>Bina tech-gyaan ke bhi chalega</h3>
+          <p>Voice-first design, regional bhasha, aur low-data mode — taaki koi bhi artisan piche na chhute.</p>
+        </div>
+        <div class="pillar">
+          <div class="num">02 — AI</div>
+          <h3>Mehnat kam, natija zyada</h3>
+          <p>Photo se catalog, catalog se fair price — sab kuch seconds mein, ghanto nahi.</p>
+        </div>
+        <div class="pillar">
+          <div class="num">03 — Bazaar</div>
+          <h3>Dalal nahi, seedha connection</h3>
+          <p>E-commerce, corporate buyers aur export markets tak seedhi pahunch, kam commission ke saath.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Dikkat kitni badi hai</p>
+        <h2>Numbers jo hume ye banane par majboor karte hain</h2>
+      </div>
+      <div class="impact-grid reveal">
+        <div class="impact-card"><b data-count="70" data-suffix="%">0</b><span>tak margin middlemen le jaate hain kai handicraft chains mein</span></div>
+        <div class="impact-card"><b data-count="200" data-suffix="M+">0</b><span>log India mein craft-based livelihoods se judhe hain</span></div>
+        <div class="impact-card"><b data-count="1" data-suffix="-click">0</b><span>mein product catalog ban jaata hai, form-filling nahi</span></div>
+        <div class="impact-card"><b data-count="12" data-suffix="+">0</b><span>regional bhashaon mein poora app kaam karta hai</span></div>
+      </div>
+      <p class="impact-note reveal">* Illustrative figures — asli data state tourism/MSME reports se refine kiya ja sakta hai.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="eyebrow reveal" style="justify-content:center; margin-bottom:22px;">Judne ke liye tayyar</p>
+      <div class="partner-strip reveal">
+        <span class="partner-word">Amazon Karigar</span>
+        <span class="partner-word">Flipkart Samarth</span>
+        <span class="partner-word">Meesho</span>
+        <span class="partner-word">Skill India</span>
+        <span class="partner-word">MSME</span>
+        <span class="partner-word">Local NGOs</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="audience">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Kiske liye</p>
+        <h2>Do log, ek platform</h2>
+      </div>
+      <div class="toggle-bar reveal">
+        <button class="toggle-btn active" data-target="karigar">Karigaron Ke Liye</button>
+        <button class="toggle-btn" data-target="kharidar">Kharidaron Ke Liye</button>
+      </div>
+
+      <div class="audience-panel active" id="karigar">
+        <div class="audience-col">
+          <h3>Apni kala, apna business</h3>
+          <p>Catalog banao, fair price paao, aur seedha bade bazaar tak pahuncho — bina kisi dalal ke commission diye.</p>
+          <div class="pill-row">
+            <span class="pill">Voice input</span>
+            <span class="pill">5-10% commission</span>
+            <span class="pill">Regional bhasha</span>
+            <span class="pill">Direct payment</span>
+          </div>
+        </div>
+        <div class="price-card">
+          <p class="eyebrow" style="color:var(--turmeric);">Commission</p>
+          <div class="num">5–10%</div>
+          <p>Traditional agencies 15-25% lete hain. Baaki poora paisa seedha aapke khaate mein.</p>
+        </div>
+      </div>
+
+      <div class="audience-panel" id="kharidar">
+        <div class="audience-col">
+          <h3>Asli, authentic, seedha karigar se</h3>
+          <p>Har product ke peeche ek kahani hai — verified handmade badge ke saath, bina kisi milawat ke.</p>
+          <div class="pill-row">
+            <span class="pill">Verified handmade</span>
+            <span class="pill">Fair-trade pricing</span>
+            <span class="pill">Artisan ki kahani</span>
+            <span class="pill">Corporate gifting</span>
+          </div>
+        </div>
+        <div class="price-card">
+          <p class="eyebrow" style="color:var(--turmeric);">Bharosa</p>
+          <div class="num">100%</div>
+          <p>Community-verified authenticity badge — jo dikhta hai wahi milta hai.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="devices">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Har screen par</p>
+        <h2>Mobile, tablet ya laptop — same ShilpMitra</h2>
+        <p>Ek hi responsive app aur website, jo artisan ke chhote phone se lekar NGO office ke laptop tak, har jagah theek se kaam kare.</p>
+      </div>
+      <div class="device-row reveal">
+        <div>
+          <div class="device d-mobile"><div class="screen"><div class="mini-ui">
+            <div class="mini-block short"></div>
+            <div class="mini-block tall"></div>
+            <div class="mini-block"></div>
+            <div class="mini-block short"></div>
+          </div></div></div>
+          <p class="device-label">Mobile</p>
+        </div>
+        <div>
+          <div class="device d-tablet"><div class="screen"><div class="mini-ui">
+            <div class="mini-row"><div class="mini-block tall"></div><div class="mini-block tall"></div></div>
+            <div class="mini-block short"></div>
+            <div class="mini-block"></div>
+          </div></div></div>
+          <p class="device-label">Tablet</p>
+        </div>
+        <div class="d-laptop">
+          <div class="lid"><div class="screen"><div class="mini-ui">
+            <div class="mini-row"><div class="mini-block tall"></div><div class="mini-block tall"></div><div class="mini-block tall"></div></div>
+            <div class="mini-block short"></div>
+            <div class="mini-block"></div>
+          </div></div></div>
+          <div class="base"></div>
+          <p class="device-label">Laptop / Website</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="voices">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin:0 auto 40px; text-align:center;">
+        <p class="eyebrow" style="justify-content:center;">Karigar awaaz</p>
+        <h2>Unki mehnat, unke shabdon mein</h2>
+      </div>
+      <div class="voice-track reveal">
+        <div class="voice-slides" id="voiceSlides">
+          <div class="voice-card"><div class="voice-inner">
+            <p class="voice-quote">"Pehle mahine mein 3 order aate the. Ab har hafte order aata hai, aur paisa seedha mere khaate mein."</p>
+            <p class="voice-who">— Radha, mitti ke bartan banane wali</p>
+          </div></div>
+          <div class="voice-card"><div class="voice-inner">
+            <p class="voice-quote">"Photo kheenchna aata tha, description likhna nahi. Ab AI khud sab kuch bana deta hai."</p>
+            <p class="voice-who">— Suresh, bamboo craft artisan</p>
+          </div></div>
+          <div class="voice-card"><div class="voice-inner">
+            <p class="voice-quote">"Middleman ko diya commission ab bachta hai. Wo paisa ab meri beti ki padhai mein jaata hai."</p>
+            <p class="voice-who">— Kamla, handloom weaver</p>
+          </div></div>
+        </div>
+      </div>
+      <div class="voice-dots" id="voiceDots">
+        <button class="active"></button><button></button><button></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head reveal" style="margin:0 auto 30px; text-align:center;">
+        <p class="eyebrow" style="justify-content:center;">FAQ</p>
+        <h2>Puchhe jaane wale sawal</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item open">
+          <button class="faq-q"><span>Kya ShilpMitra ke liye smartphone/internet bahut fast chahiye?</span><span class="plus"></span></button>
+          <div class="faq-a" style="max-height:120px;"><p>Nahi. App low-data mode mein bhi chalta hai aur 2G/3G connection par bhi kaam karta hai, taaki har gaanv ka artisan use kar sake.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Commission kitna lagta hai?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Sirf 5-10% per sale, jo traditional agencies ke 15-25% se kaafi kam hai. Baaki poora paisa artisan ke khaate mein seedha jaata hai.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Agar mujhe likhna-padhna nahi aata to?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Koi baat nahi — voice input use karo. Bas bol ke bata do product ke baare mein, AI khud text aur catalog bana dega.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Product asli handmade hai, ye kaise pata chalega?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Har verified artisan ko community-based "Authentic Handmade" badge milta hai, jo buyer ko dikhta hai listing par.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q"><span>Website aur mobile app mein data sync hota hai kya?</span><span class="plus"></span></button>
+          <div class="faq-a"><p>Haan — ek hi account se aap mobile, tablet ya laptop kisi bhi device se apna catalog, orders aur payments dekh sakte ho.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="contact">
+    <div class="wrap contact-grid">
+      <div class="contact-form reveal">
+        <p class="eyebrow">Sampark</p>
+        <h2 style="font-size:clamp(24px,3vw,32px); margin:14px 0 24px;">Judiye ya sawal poochiye</h2>
+        <form id="contactForm" novalidate>
+          <div class="field" id="fieldName">
+            <label for="cName">Naam</label>
+            <input type="text" id="cName" placeholder="Apna naam likhein" />
+            <span class="err-msg">Naam likhna zaroori hai.</span>
+          </div>
+          <div class="field" id="fieldEmail">
+            <label for="cEmail">Email ya phone</label>
+            <input type="text" id="cEmail" placeholder="name@example.com" />
+            <span class="err-msg">Sahi email ya phone number likhein.</span>
+          </div>
+          <div class="field" id="fieldMsg">
+            <label for="cMsg">Sandesh</label>
+            <textarea id="cMsg" placeholder="Aap kya jaanna chahte hain?"></textarea>
+            <span class="err-msg">Thoda message likhein.</span>
+          </div>
+          <button type="submit" class="btn btn-solid">Bhejein</button>
+          <div class="form-success" id="formSuccess">Dhanyavaad — hum jaldi hi sampark karenge.</div>
+        </form>
+      </div>
+      <div class="contact-side reveal">
+        <h3>Karigar ho ya NGO — dono ka swagat hai</h3>
+        <p>Agar aap khud artisan hain, kisi NGO se hain, ya kisi platform ke saath partner karna chahte hain — humein bataiye.</p>
+        <div class="info-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z" opacity="0"/><path d="M3 6l9 7 9-7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></div><div><b>Email</b><span>hello@shilpmitra.app</span></div></div>
+        <div class="info-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v4M9 22h6"/></svg></div><div><b>Voice Helpline</b><span>Regional bhasha mein support</span></div></div>
+        <div class="info-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11a7 7 0 10-14 0c0 4.5 7 11 7 11z"/></svg></div><div><b>Pilot Location</b><span>Craft clusters, phase-wise rollout</span></div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<section class="cta-footer">
+  <div class="wrap">
+    <h2>Apni kala ko bazaar tak pahunchaiye</h2>
+    <p>ShilpMitra download karo mobile par, ya website kholo laptop par — safar wahi rahega.</p>
+    <div class="store-row">
+      <div class="store-badge">
+        <svg viewBox="0 0 24 24" fill="var(--khadi)"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm3.6 14.4l-3.6-2-3.6 2 1-4-3-2.8 4-.4 1.6-3.6 1.6 3.6 4 .4-3 2.8z"/></svg>
+        <span>Download on the<br><b>App Store</b></span>
+      </div>
+      <div class="store-badge">
+        <svg viewBox="0 0 24 24" fill="var(--khadi)"><path d="M4 3l16 9-16 9V3z"/></svg>
+        <span>Get it on<br><b>Google Play</b></span>
+      </div>
+      <a class="btn btn-solid" style="background:var(--turmeric); color:var(--indigo);" href="#top">Website Kholiye ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top">Shilp<em>Mitra</em></a>
+        <p>AI se marginalized artisans ko seedha bazaar se jodne wala platform — mobile, tablet aur laptop, sab par.</p>
+        <div class="lang-pill" style="margin-top:18px;"><span class="active">हिंदी</span><span>English</span></div>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#how">Kaise Kaam Karta Hai</a>
+        <a href="#features">Suvidhayein</a>
+        <a href="#devices">Har Screen Par</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#about">Hamare Baare Mein</a>
+        <a href="#voices">Karigar Awaaz</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Sampark</h4>
+        <a href="#contact">Contact Us</a>
+        <a href="#audience">Karigar Ke Liye</a>
+        <a href="#audience">Kharidar Ke Liye</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 ShilpMitra — student innovation project</p>
+      <div class="social-row">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="var(--khadi)" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="var(--khadi)" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="var(--khadi)" stroke="none"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="var(--khadi)" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4M12 13v4"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="backToTop" aria-label="Upar jaayein"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- PWA: register service worker + install prompt ----
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){ /* fine if this fails on file:// */ });
+    });
+  }
+  var deferredInstallPrompt = null;
+  var installBtn = document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    if (installBtn) installBtn.style.display = 'inline-flex';
+  });
+  if (installBtn){
+    installBtn.addEventListener('click', function(){
+      if (!deferredInstallPrompt) {
+        alert('iPhone/Safari par: Share button dabao, phir "Add to Home Screen" select karo.');
+        return;
+      }
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then(function(){ deferredInstallPrompt = null; installBtn.style.display = 'none'; });
+    });
+  }
+  window.addEventListener('appinstalled', function(){ if (installBtn) installBtn.style.display = 'none'; });
+
+  var themeToggle = document.getElementById('themeToggle');
+  if (themeToggle){
+    themeToggle.addEventListener('click', function(){
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    });
+  }
+
+  window.addEventListener('load', function(){
+    var pre = document.getElementById('preloader');
+    setTimeout(function(){ pre.classList.add('done'); }, 350);
+  });
+
+  var navEl = document.getElementById('siteNav');
+  var progressBar = document.getElementById('scrollProgress');
+  var backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', function(){
+    navEl.classList.toggle('scrolled', window.scrollY > 8);
+    var doc = document.documentElement;
+    var pct = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+    progressBar.style.width = pct + '%';
+    backToTop.classList.toggle('show', window.scrollY > 500);
+  });
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top:0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    q.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(other){
+        other.classList.remove('open');
+        other.querySelector('.faq-a').style.maxHeight = 0;
+      });
+      if (!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  var contactForm = document.getElementById('contactForm');
+  if (contactForm){
+    contactForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var nameEl = document.getElementById('cName');
+      var emailEl = document.getElementById('cEmail');
+      var msgEl = document.getElementById('cMsg');
+      var valid = true;
+
+      var nameField = document.getElementById('fieldName');
+      var emailField = document.getElementById('fieldEmail');
+      var msgField = document.getElementById('fieldMsg');
+      nameField.classList.remove('error'); emailField.classList.remove('error'); msgField.classList.remove('error');
+
+      if (nameEl.value.trim().length < 2){ nameField.classList.add('error'); valid = false; }
+      var emailVal = emailEl.value.trim();
+      var looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+      var looksLikePhone = /^[0-9+\-\s]{7,}$/.test(emailVal);
+      if (!(looksLikeEmail || looksLikePhone)){ emailField.classList.add('error'); valid = false; }
+      if (msgEl.value.trim().length < 5){ msgField.classList.add('error'); valid = false; }
+
+      if (!valid) return;
+
+      document.getElementById('formSuccess').classList.add('show');
+      contactForm.reset();
+    });
+  }
+
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function(){
+    navToggle.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navToggle.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+
+  if (window.gsap && window.ScrollTrigger){
+    gsap.registerPlugin(ScrollTrigger);
+    var reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(function(el, i){
+      gsap.to(el, {
+        opacity:1, y:0, duration: reduceMotion ? 0 : 0.8, ease:'power2.out',
+        scrollTrigger:{ trigger: el, start:'top 88%' }
+      });
+    });
+
+    gsap.set('.hero-copy > *', { opacity:0, y:22 });
+    gsap.set('.hero-visual', { opacity:0, y:22 });
+    var heroTl = gsap.timeline({ defaults:{ ease:'power2.out', duration: reduceMotion ? 0 : 0.7 } });
+    heroTl.to('.hero-copy > *', { opacity:1, y:0, stagger:0.1 })
+          .to('.hero-visual', { opacity:1, y:0 }, '-=0.5');
+
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      var target = parseFloat(el.getAttribute('data-count'));
+      var suffix = el.getAttribute('data-suffix') || '';
+      var obj = { val: 0 };
+      ScrollTrigger.create({
+        trigger: el, start:'top 90%', once:true,
+        onEnter: function(){
+          gsap.to(obj, {
+            val: target, duration: reduceMotion ? 0 : 1.4, ease:'power1.out',
+            onUpdate: function(){ el.textContent = Math.round(obj.val) + suffix; }
+          });
+        }
+      });
+    });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+  }
+
+  var pathEl = document.getElementById('threadPath');
+  if (pathEl){
+    var len = pathEl.getTotalLength();
+    pathEl.style.strokeDasharray = len;
+    pathEl.style.strokeDashoffset = len;
+    if (window.gsap){
+      gsap.to(pathEl, { strokeDashoffset:0, duration: reduceMotion ? 0 : 1.8, ease:'power2.out', delay:0.3 });
+    } else {
+      pathEl.style.strokeDashoffset = 0;
+    }
+  }
+
+  var tabs = document.querySelectorAll('.screen-tab');
+  var phoneDots = document.querySelectorAll('#phoneDots span');
+  var tabIndex = 0;
+  function showTab(i){
+    tabs.forEach(function(t, idx){ t.classList.toggle('active', idx === i); });
+    phoneDots.forEach(function(d, idx){ d.classList.toggle('active', idx === i); });
+  }
+  if (!reduceMotion){
+    setInterval(function(){
+      tabIndex = (tabIndex + 1) % tabs.length;
+      showTab(tabIndex);
+    }, 3200);
+  }
+
+  var toggleBtns = document.querySelectorAll('.toggle-btn');
+  toggleBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      toggleBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('.audience-panel').forEach(function(p){ p.classList.remove('active'); });
+      document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+    });
+  });
+
+  var voiceSlides = document.getElementById('voiceSlides');
+  var voiceDots = document.querySelectorAll('#voiceDots button');
+  var voiceIndex = 0;
+  function showVoice(i){
+    voiceIndex = i;
+    voiceSlides.style.transform = 'translateX(-' + (i * 100) + '%)';
+    voiceDots.forEach(function(d, idx){ d.classList.toggle('active', idx === i); });
+  }
+  voiceDots.forEach(function(d, idx){ d.addEventListener('click', function(){ showVoice(idx); }); });
+  if (!reduceMotion){
+    setInterval(function(){ showVoice((voiceIndex + 1) % voiceDots.length); }, 4200);
+  }
+</script>
+</body>
+</html>
