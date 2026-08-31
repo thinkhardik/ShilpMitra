@@ -1,18 +1,19 @@
-// db.js — real, persistent SQLite database using Node's built-in node:sqlite module.
-// The database file (shilpmitra.db) is created automatically on first run and
-// survives server restarts — this is genuine persistence, not in-memory mock data.
+// db.js — real, persistent SQLite database using the well-established
+// better-sqlite3 package (works reliably across all Node versions and
+// hosting platforms — unlike the newer node:sqlite built-in, which isn't
+// available on every Node version, e.g. Render's default runtime).
 
-const { DatabaseSync } = require('node:sqlite');
+const Database = require('better-sqlite3');
 const path = require('path');
 
-const db = new DatabaseSync(path.join(__dirname, 'shilpmitra.db'));
+const db = new Database(path.join(__dirname, 'shilpmitra.db'));
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     phone TEXT UNIQUE NOT NULL,
     name TEXT,
-    role TEXT NOT NULL DEFAULT 'buyer', -- 'artisan' | 'buyer' | 'admin'
+    role TEXT NOT NULL DEFAULT 'buyer',
     region TEXT,
     trust_score REAL DEFAULT 4.0,
     created_at TEXT DEFAULT (datetime('now'))
@@ -34,7 +35,7 @@ db.exec(`
     category TEXT,
     price REAL NOT NULL,
     ai_suggested_price REAL,
-    status TEXT DEFAULT 'live', -- 'draft' | 'live' | 'review'
+    status TEXT DEFAULT 'live',
     verified_badge INTEGER DEFAULT 0,
     created_at TEXT DEFAULT (datetime('now')),
     FOREIGN KEY (artisan_id) REFERENCES users(id)
@@ -46,16 +47,14 @@ db.exec(`
     product_id INTEGER NOT NULL,
     quantity INTEGER DEFAULT 1,
     total_price REAL NOT NULL,
-    status TEXT DEFAULT 'new', -- 'new' | 'shipped' | 'delivered'
-    payment_status TEXT DEFAULT 'pending', -- 'pending' | 'paid' | 'failed'
+    status TEXT DEFAULT 'new',
+    payment_status TEXT DEFAULT 'pending',
     payment_ref TEXT,
     created_at TEXT DEFAULT (datetime('now')),
     FOREIGN KEY (product_id) REFERENCES products(id)
   );
 `);
 
-// --- seed a demo artisan + products the first time the DB is created, so the
-// API has something real to return immediately (not fake — it's actual DB rows) ---
 const productCount = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
 if (productCount === 0) {
   const insertUser = db.prepare(
